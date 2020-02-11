@@ -6,11 +6,13 @@ procedure Simple is
    -- type A is array (1 .. 1000_000_000) of Boolean with Pack;
 
    Input  : constant String := "ABC";
+   -- Input  : constant String := "ZBC";
    Result : Parsing.Result  := Parsing.Parse_A (Input);
+
+   procedure Print_Result (R : Parsing.Result) is
+   begin
+      Put_Line ("(" & Boolean'Image (R.Success) & ", """ & R.Remaining & """)");
+   end Print_Result;
 begin
-   if Result.Success = True then
-      Put_Line ("Success - Reamining input: '" & Result.Remaining & "'");
-   else
-      Put_Line ("Parsing Failed - Reamining input: '" & Result.Remaining & "'");
-   end if;
+   Print_Result (Result);
 end Simple;
