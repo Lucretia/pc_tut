@@ -1,8 +1,13 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 package Parsing is
-   type Result (Length : Natural) is record
-      Success   : Boolean;
-      Remaining : String (1 .. Length);
+   function "+" (Source : in Unbounded_String) return String renames To_String;
+   function "+" (Source : in String) return Unbounded_String renames To_Unbounded_String;
+
+   type Result  is record
+      Message   : Ada.Strings.Unbounded.Unbounded_String;
+      Remaining : Ada.Strings.Unbounded.Unbounded_String;
    end record;
 
-   function Parse_A (Input : in String) return Result;
+   function Parse_Char (Match : in Character; Input : in String) return Result;
 end Parsing;
