@@ -1,11 +1,10 @@
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Containers.Doubly_Linked_Lists;
-
-
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 
 package Parsing is
-   package Char_List is new Ada.Containers.Doubly_Linked_Lists (Element_Type => Character);
-   type Matches is interface;
+   package Char_List is new Ada.Containers.Indefinite_Doubly_Linked_Lists (Element_Type => Character);
+   package List_Of_Char_Lists is new Ada.Containers.Doubly_Linked_Lists (Element_Type => Char_List.List, "=" => Char_List."=");
 
    type Result is interface;
 
@@ -14,9 +13,19 @@ package Parsing is
    end record;
 
    type Success is new Result with record
-      Matched   : Char_List.List;
+      Matched   : List_Of_Char_Lists.List;
       Remaining : Ada.Strings.Unbounded.Unbounded_String;
    end record;
 
-   function Parse_Char (Match : in Character; Input : in String) return Result'Class;
+   type Root_Parser is interface;
+
+   function Parse (Parser : in Root_Parser; Input : in String) return Result'Class is abstract;
+
+   type Parse_Character (Match : Character) is new Root_Parser with null record;
+
+   function Parse (Parser : in Parse_Character; Input : in String) return Result'Class;
+
+   type Parse_And_Then (Parser_A, Parser_B : access Root_Parser'Class) is new Root_Parser with null record;
+
+   function Parse (Parser : in Parse_And_Then; Input : in String) return Result'Class;
 end Parsing;
