@@ -81,15 +81,5 @@ package body Parsing is
 
       --  Or this...
       return Parser.Parser_B.Constant_Reference.Parse (Input);
-      -- declare
-      --    Result_2 : Result'Class := Parser.Parser_B.Parse (Input);
-      -- begin
-      --    if Result_2 in Success'Class then
-      --       return Build_Result (Success (Result_2));
-      --    end if;
-
-      --    --  Or fail.
-      --    return Result_2;
-      -- end;
    end Parse;
 end Parsing;
