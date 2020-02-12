@@ -51,7 +51,7 @@ package body Parsing is
          L.Append (Chars);
 
          return Success'(Matched   => L,
-                         Remaining => To_Unbounded_String (Input (Input'First + 1 .. Input'Last)));
+                         Remaining => Success (Result_2).Remaining);
       end;
    end Parse;
 
@@ -80,15 +80,16 @@ package body Parsing is
       end if;
 
       --  Or this...
-      declare
-         Result_2 : Result'Class := Parser.Parser_B.Parse (Input);
-      begin
-         if Result_2 in Success'Class then
-            return Build_Result (Success (Result_2));
-         end if;
+      return Parser.Parser_B.Parse (Input);
+      -- declare
+      --    Result_2 : Result'Class := Parser.Parser_B.Parse (Input);
+      -- begin
+      --    if Result_2 in Success'Class then
+      --       return Build_Result (Success (Result_2));
+      --    end if;
 
-         --  Or fail.
-         return Result_2;
-      end;
+      --    --  Or fail.
+      --    return Result_2;
+      -- end;
    end Parse;
 end Parsing;

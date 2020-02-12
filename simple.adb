@@ -6,17 +6,16 @@ with Parsing;
 procedure Simple is
    use type Ada.Containers.Count_Type;
 
-   -- Input   : constant String := "ABC";
-   -- Input   : constant String := "ZBC";
-   -- Input   : constant String := "AZC";
-   Input   : constant String := "AZZ";
-   -- Input   : constant String := "BZZ";
-   -- Input   : constant String := "CZZ";
-   Parse_A : aliased Parsing.Parse_Character (Match => 'A');
-   Parse_B : aliased Parsing.Parse_Character (Match => 'B');
-   -- Parser  : Parsing.Parse_And_Then (Parse_A'Access, Parse_B'Access);
-   Parser  : Parsing.Parse_Or_Else (Parse_A'Access, Parse_B'Access);
-   Result  : Parsing.Result'Class := Parser.Parse (Input);
+   -- Input   : constant String := "ABZ";
+   -- Input   : constant String := "ACZ";
+   -- Input   : constant String := "QBZ";
+   Input   : constant String := "AQZ";
+   Parse_A                  : aliased Parsing.Parse_Character (Match => 'A');
+   Parse_B                  : aliased Parsing.Parse_Character (Match => 'B');
+   Parse_C                  : aliased Parsing.Parse_Character (Match => 'C');
+   Parse_B_Or_Else_C        : aliased Parsing.Parse_Or_Else (Parse_B'Access, Parse_C'Access);
+   Parse_A_And_Then_B_Or_C  : Parsing.Parse_And_Then (Parse_A'Access, Parse_B_Or_Else_C'Access);
+   Result  : Parsing.Result'Class := Parse_A_And_Then_B_Or_C.Parse (Input);
 
    procedure Print_Result (R : Parsing.Result'Class) is
       First : Boolean := True;
