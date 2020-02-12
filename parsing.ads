@@ -29,6 +29,10 @@ package Parsing is
 
    function Parse (Parser : in Parse_Character; Input : in String) return Result'Class;
 
+   type Parse_Character_Range (Match_From, Match_To : Character) is new Root_Parser with null record;
+
+   function Parse (Parser : in Parse_Character_Range; Input : in String) return Result'Class;
+
    type Parse_And_Then is new Root_Parser with record
       Parser_A, Parser_B : Holder;
    end record;
@@ -43,6 +47,8 @@ package Parsing is
 
    --  Creators
    function Character_Parser (Match : Character) return Holder is (To_Holder (Parse_Character'(Match => Match)));
+   function Character_Parser (Match_From, Match_To : Character) return Holder is
+     (To_Holder (Parse_Character_Range'(Match_From => Match_From, Match_To => Match_To)));
 
    --  These have to go into a child packae as we cannot dispatch on multiple tagged types.
    package Operators is

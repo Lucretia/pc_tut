@@ -12,11 +12,33 @@ package body Parsing is
             L.Append (Chars);
 
             return Success'(Matched => L,
-                           Remaining => To_Unbounded_String (Input (Input'First + 1 .. Input'Last)));
+                            Remaining => To_Unbounded_String (Input (Input'First + 1 .. Input'Last)));
          end;
       else
          return Failure'(Message => To_Unbounded_String
                           ("Expecting '" & Parser.Match & "', got '" & Input (Input'First) & "'"));
+      end if;
+   end Parse;
+
+   function Parse (Parser : in Parse_Character_Range; Input : in String) return Result'Class is
+      First : constant Character := Input (Input'First);
+   begin
+      if Input = "" then
+         return Failure'(Message => To_Unbounded_String ("No more input"));
+      elsif First in Parser.Match_From .. Parser.Match_To then
+         declare
+            Chars : Char_List.List;
+            L     : List_Of_Char_Lists.List;
+         begin
+            Chars.Append (First);
+            L.Append (Chars);
+
+            return Success'(Matched => L,
+                            Remaining => To_Unbounded_String (Input (Input'First + 1 .. Input'Last)));
+         end;
+      else
+         return Failure'(Message => To_Unbounded_String
+                          ("Expecting '" & Parser.Match_To & "', got '" & First & "'"));
       end if;
    end Parse;
 

@@ -9,9 +9,13 @@ procedure Simple is
 
 
    -- Input   : constant String := "ABZ";
-   Input   : constant String := "ACZ";
+   -- Input   : constant String := "ACZ";
    -- Input   : constant String := "QBZ";
    -- Input   : constant String := "AQZ";
+   -- Input   : constant String := "aCZ";
+   -- Input   : constant String := "1ABZ";
+   -- Input   : constant String := "9ABZ";
+   Input   : constant String := "|ABZ";
    -- Parse_A                  : aliased Parsing.Parse_Character (Match => 'A');
    -- Parse_B                  : aliased Parsing.Parse_Character (Match => 'B');
    -- Parse_C                  : aliased Parsing.Parse_Character (Match => 'C');
@@ -20,7 +24,11 @@ procedure Simple is
    Parse_C                  : Parsing.Holder         := Parsing.Character_Parser (Match => 'C');
    Parse_B_Or_Else_C        : Parsing.Holder         := Parsing.To_Holder (Parse_B or Parse_C);
    Parse_A_And_Then_B_Or_C  : Parsing.Parse_And_Then := (Parse_A and Parse_B_Or_Else_C);
-   Result                   : Parsing.Result'Class   := Parse_A_And_Then_B_Or_C.Parse (Input);
+   Parse_Lowercase          : Parsing.Parse_Character_Range := Parsing.Parse_Character_Range'(Match_From => 'a', Match_To => 'z');
+   Parse_Digits             : Parsing.Parse_Character_Range := Parsing.Parse_Character_Range'(Match_From => '0', Match_To => '9');
+   -- Result                   : Parsing.Result'Class   := Parse_A_And_Then_B_Or_C.Parse (Input);
+   -- Result                   : Parsing.Result'Class   := Parse_Lowercase.Parse (Input);
+   Result                   : Parsing.Result'Class   := Parse_Digits.Parse (Input);
 
    procedure Print_Result (R : Parsing.Result'Class) is
       First : Boolean := True;
