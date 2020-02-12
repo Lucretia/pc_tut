@@ -54,4 +54,41 @@ package body Parsing is
                          Remaining => To_Unbounded_String (Input (Input'First + 1 .. Input'Last)));
       end;
    end Parse;
+
+   function Parse (Parser : in Parse_Or_Else; Input : in String) return Result'Class is
+      function Build_Result (R : in Success) return Result'Class is
+         Chars  : Char_List.List;
+         L      : List_Of_Char_Lists.List;
+      begin
+         for I of R.Matched loop
+            for C of I loop
+               Chars.Append (C);
+            end loop;
+         end loop;
+
+         L.Append (Chars);
+
+         return Success'(Matched   => L,
+                         Remaining => R.Remaining);
+      end Build_Result;
+
+      Result_1 : Result'Class := Parser.Parser_A.Parse (Input);
+   begin
+      --  Do this...
+      if Result_1 in Success'Class then
+         return Build_Result (Success (Result_1));
+      end if;
+
+      --  Or this...
+      declare
+         Result_2 : Result'Class := Parser.Parser_B.Parse (Input);
+      begin
+         if Result_2 in Success'Class then
+            return Build_Result (Success (Result_2));
+         end if;
+
+         --  Or fail.
+         return Result_2;
+      end;
+   end Parse;
 end Parsing;

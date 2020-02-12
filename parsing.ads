@@ -28,4 +28,8 @@ package Parsing is
    type Parse_And_Then (Parser_A, Parser_B : access Root_Parser'Class) is new Root_Parser with null record;
 
    function Parse (Parser : in Parse_And_Then; Input : in String) return Result'Class;
+
+   type Parse_Or_Else (Parser_A, Parser_B : access Root_Parser'Class) is new Root_Parser with null record;
+
+   function Parse (Parser : in Parse_Or_Else; Input : in String) return Result'Class;
 end Parsing;

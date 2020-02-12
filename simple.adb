@@ -6,12 +6,16 @@ with Parsing;
 procedure Simple is
    use type Ada.Containers.Count_Type;
 
-   Input   : constant String := "ABC";
+   -- Input   : constant String := "ABC";
    -- Input   : constant String := "ZBC";
    -- Input   : constant String := "AZC";
+   Input   : constant String := "AZZ";
+   -- Input   : constant String := "BZZ";
+   -- Input   : constant String := "CZZ";
    Parse_A : aliased Parsing.Parse_Character (Match => 'A');
    Parse_B : aliased Parsing.Parse_Character (Match => 'B');
-   Parser  : Parsing.Parse_And_Then (Parse_A'Access, Parse_B'Access);
+   -- Parser  : Parsing.Parse_And_Then (Parse_A'Access, Parse_B'Access);
+   Parser  : Parsing.Parse_Or_Else (Parse_A'Access, Parse_B'Access);
    Result  : Parsing.Result'Class := Parser.Parse (Input);
 
    procedure Print_Result (R : Parsing.Result'Class) is
