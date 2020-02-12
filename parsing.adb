@@ -21,14 +21,14 @@ package body Parsing is
    end Parse;
 
    function Parse (Parser : in Parse_And_Then; Input : in String) return Result'Class is
-      Result_1 : Result'Class := Parser.Parser_A.Parse (Input);
+      Result_1 : Result'Class := Parser.Parser_A.Constant_Reference.Parse (Input);
    begin
       if Result_1 in Failure'Class then
          return Result_1;
       end if;
 
       declare
-         Result_2 : Result'Class := Parser.Parser_B.Parse (To_String (Success (Result_1).Remaining));
+         Result_2 : Result'Class := Parser.Parser_B.Constant_Reference.Parse (To_String (Success (Result_1).Remaining));
          Chars    : Char_List.List;
          L        : List_Of_Char_Lists.List;
       begin
@@ -72,7 +72,7 @@ package body Parsing is
                          Remaining => R.Remaining);
       end Build_Result;
 
-      Result_1 : Result'Class := Parser.Parser_A.Parse (Input);
+      Result_1 : Result'Class := Parser.Parser_A.Constant_Reference.Parse (Input);
    begin
       --  Do this...
       if Result_1 in Success'Class then
@@ -80,7 +80,7 @@ package body Parsing is
       end if;
 
       --  Or this...
-      return Parser.Parser_B.Parse (Input);
+      return Parser.Parser_B.Constant_Reference.Parse (Input);
       -- declare
       --    Result_2 : Result'Class := Parser.Parser_B.Parse (Input);
       -- begin

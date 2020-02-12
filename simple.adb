@@ -1,21 +1,24 @@
 with Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
-with Parsing;
+with Parsing;               use Parsing.Operators;
 
 procedure Simple is
    use type Ada.Containers.Count_Type;
 
    -- Input   : constant String := "ABZ";
-   -- Input   : constant String := "ACZ";
+   Input   : constant String := "ACZ";
    -- Input   : constant String := "QBZ";
-   Input   : constant String := "AQZ";
-   Parse_A                  : aliased Parsing.Parse_Character (Match => 'A');
-   Parse_B                  : aliased Parsing.Parse_Character (Match => 'B');
-   Parse_C                  : aliased Parsing.Parse_Character (Match => 'C');
-   Parse_B_Or_Else_C        : aliased Parsing.Parse_Or_Else (Parse_B'Access, Parse_C'Access);
-   Parse_A_And_Then_B_Or_C  : Parsing.Parse_And_Then (Parse_A'Access, Parse_B_Or_Else_C'Access);
-   Result  : Parsing.Result'Class := Parse_A_And_Then_B_Or_C.Parse (Input);
+   -- Input   : constant String := "AQZ";
+   -- Parse_A                  : aliased Parsing.Parse_Character (Match => 'A');
+   -- Parse_B                  : aliased Parsing.Parse_Character (Match => 'B');
+   -- Parse_C                  : aliased Parsing.Parse_Character (Match => 'C');
+   Parse_A                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'A'));
+   Parse_B                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'B'));
+   Parse_C                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'C'));
+   Parse_B_Or_Else_C        : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parse_B or Parse_C);
+   Parse_A_And_Then_B_Or_C  : Parsing.Parse_And_Then := (Parse_A and Parse_B_Or_Else_C);
+   Result                   : Parsing.Result'Class   := Parse_A_And_Then_B_Or_C.Parse (Input);
 
    procedure Print_Result (R : Parsing.Result'Class) is
       First : Boolean := True;
