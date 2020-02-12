@@ -5,6 +5,8 @@ with Parsing;               use Parsing.Operators;
 
 procedure Simple is
    use type Ada.Containers.Count_Type;
+   use type Parsing.Holder;
+
 
    -- Input   : constant String := "ABZ";
    Input   : constant String := "ACZ";
@@ -13,10 +15,10 @@ procedure Simple is
    -- Parse_A                  : aliased Parsing.Parse_Character (Match => 'A');
    -- Parse_B                  : aliased Parsing.Parse_Character (Match => 'B');
    -- Parse_C                  : aliased Parsing.Parse_Character (Match => 'C');
-   Parse_A                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'A'));
-   Parse_B                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'B'));
-   Parse_C                  : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parsing.Parse_Character'(Match => 'C'));
-   Parse_B_Or_Else_C        : Parsing.PH.Holder      := Parsing.PH.To_Holder (Parse_B or Parse_C);
+   Parse_A                  : Parsing.Holder         := Parsing.Character_Parser (Match => 'A');
+   Parse_B                  : Parsing.Holder         := Parsing.Character_Parser (Match => 'B');
+   Parse_C                  : Parsing.Holder         := Parsing.Character_Parser (Match => 'C');
+   Parse_B_Or_Else_C        : Parsing.Holder         := Parsing.To_Holder (Parse_B or Parse_C);
    Parse_A_And_Then_B_Or_C  : Parsing.Parse_And_Then := (Parse_A and Parse_B_Or_Else_C);
    Result                   : Parsing.Result'Class   := Parse_A_And_Then_B_Or_C.Parse (Input);
 
